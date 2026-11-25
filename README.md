@@ -10,3 +10,4 @@ Entity Framework Core
 
 Microsoft SQL Server
 
+версия 1.0
