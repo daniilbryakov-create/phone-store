@@ -1,0 +1,27 @@
+@using Web_App.Models
+@model List<Phone>
+@{
+    ViewData["Title"] = "Остатки на складе";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Остатки на складе</h1>
+    <a asp-controller="Phones" asp-action="Create" class="btn btn-outline-primary">Добавить модель в каталог</a>
+</div>
+
+<table class="table table-hover align-middle">
+    <thead>
+        <tr><th>Производитель</th><th>Модель</th><th class="text-end">Цена</th><th class="text-end">На складе</th></tr>
+    </thead>
+    <tbody>
+    @foreach (var p in Model)
+    {
+        <tr>
+            <td>@p.CompanyName</td>
+            <td>@p.PhoneName</td>
+            <td class="text-end">@p.Price.ToString("N0") ₽</td>
+            <td class="text-end @(p.StockAmount == 0 ? "text-danger fw-bold" : "")">@p.StockAmount</td>
+        </tr>
+    }
+    </tbody>
+</table>

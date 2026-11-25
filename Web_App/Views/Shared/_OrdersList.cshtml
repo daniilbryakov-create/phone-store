@@ -1,0 +1,83 @@
+@using Web_App.Models
+@using Web_App.Models.ViewModels
+@model OrdersListViewModel
+
+@if (!Model.Orders.Any())
+{
+    <p class="text-muted">Заказов пока нет.</p>
+}
+
+@foreach (var o in Model.Orders)
+{
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>
+                <strong>Заказ № @o.Id</strong> от @o.Date.ToString("dd.MM.yyyy HH:mm")
+                @if (Model.SellerMode)
+                {
+                    <span class="text-muted"> · @o.Client.FullName, @o.Client.PhoneNumber</span>
+                }
+            </span>
+            <span class="badge bg-secondary">@o.Status.ToDisplayString()</span>
+        </div>
+        <div class="card-body">
+            <ul class="mb-2">
+                @foreach (var item in o.Items)
+                {
+                    <li>@item.Phone — @item.Amount шт. × @item.PricePerItem.ToString("N0") ₽</li>
+                }
+            </ul>
+            <strong>Итого: @o.TotalPrice.ToString("N0") ₽</strong>
+
+            <div class="mt-3 d-flex flex-wrap gap-2">
+                @if (Model.SellerMode)
+                {
+                    if (o.Status == OrderStatus.AwaitingConfirmation)
+                    {
+                        <form asp-controller="Seller" asp-action="OrderAction" method="post">
+                            <input type="hidden" name="id" value="@o.Id" />
+                            <button name="action" value="confirm" class="btn btn-sm btn-success">Подтвердить (проверить наличие)</button>
+                        </form>
+                    }
+                    if (o.Status == OrderStatus.AwaitingPayment)
+                    {
+                        <form asp-controller="Seller" asp-action="OrderAction" method="post">
+                            <input type="hidden" name="id" value="@o.Id" />
+                            <button name="action" value="pay" class="btn btn-sm btn-success">Оплата получена</button>
+                        </form>
+                    }
+                    if (o.Status == OrderStatus.Paid)
+                    {
+                        <form asp-controller="Seller" asp-action="OrderAction" method="post">
+                            <input type="hidden" name="id" value="@o.Id" />
+                            <button name="action" value="ready" class="btn btn-sm btn-primary">Заказ скомплектован</button>
+                        </form>
+                    }
+                    if (o.Status == OrderStatus.ReadyForPickup)
+                    {
+                        <form asp-controller="Seller" asp-action="OrderAction" method="post">
+                            <input type="hidden" name="id" value="@o.Id" />
+                            <button name="action" value="complete" class="btn btn-sm btn-primary">Клиент получил телефон</button>
+                        </form>
+                    }
+                    if (o.Status is OrderStatus.AwaitingConfirmation or OrderStatus.Confirmed or OrderStatus.AwaitingPayment)
+                    {
+                        <form asp-controller="Seller" asp-action="OrderAction" method="post"
+                              onsubmit="return confirm('Отменить заказ № @(o.Id)?');">
+                            <input type="hidden" name="id" value="@o.Id" />
+                            <button name="action" value="cancel" class="btn btn-sm btn-outline-danger">Отменить</button>
+                        </form>
+                    }
+                }
+                else if (o.Status is OrderStatus.AwaitingConfirmation or OrderStatus.Confirmed or OrderStatus.AwaitingPayment)
+                {
+                    <form asp-controller="Client" asp-action="Cancel" method="post"
+                          onsubmit="return confirm('Отменить заказ № @(o.Id)?');">
+                        <input type="hidden" name="id" value="@o.Id" />
+                        <button class="btn btn-sm btn-outline-danger">Отменить заказ</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,36 @@
+@using Web_App.Models
+@model List<Report>
+@{
+    ViewData["Title"] = "Отчёты";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Отчёты</h1>
+    <a asp-action="NewReport" class="btn btn-primary">Сформировать отчёт</a>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">Отчётов пока нет.</p>
+}
+else
+{
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr><th>№</th><th>Тип</th><th>Период</th><th>Сформирован</th><th>Менеджер</th><th></th></tr>
+        </thead>
+        <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Id</td>
+                <td>@r.Type.ToDisplayString()</td>
+                <td>@r.DateFrom.ToString("dd.MM.yyyy") — @r.DateTo.ToString("dd.MM.yyyy")</td>
+                <td>@r.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@r.Manager.FullName</td>
+                <td class="text-end"><a asp-action="ReportDetails" asp-route-id="@r.Id">Открыть</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

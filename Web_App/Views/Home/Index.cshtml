@@ -1,0 +1,66 @@
+@using Web_App.Models.ViewModels
+@model PhoneSearchViewModel
+@{
+    ViewData["Title"] = "Каталог телефонов";
+}
+
+<h1 class="h3 mb-3">Каталог телефонов</h1>
+
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-md-3">
+        <label class="form-label" for="Company">Производитель</label>
+        <input id="Company" name="Company" value="@Model.Company" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="ModelName">Название модели</label>
+        <input id="ModelName" name="ModelName" value="@Model.ModelName" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="MinPrice">Цена от</label>
+        <input id="MinPrice" name="MinPrice" type="number" min="0" value="@Model.MinPrice" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="MaxPrice">Цена до</label>
+        <input id="MaxPrice" name="MaxPrice" type="number" min="0" value="@Model.MaxPrice" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <div class="form-check mb-2">
+            <input id="OnlyAvailable" name="OnlyAvailable" type="checkbox" value="true" class="form-check-input" @(Model.OnlyAvailable ? "checked" : null) />
+            <label class="form-check-label" for="OnlyAvailable">Только в наличии</label>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Найти</button>
+    </div>
+</form>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+@if (!Model.Results.Any())
+{
+    <p class="text-muted">Ничего не найдено.</p>
+}
+else
+{
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Производитель</th>
+                <th>Модель</th>
+                <th class="text-end">Цена</th>
+                <th class="text-end">В наличии</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var p in Model.Results)
+        {
+            <tr>
+                <td>@p.CompanyName</td>
+                <td>@p.PhoneName</td>
+                <td class="text-end">@p.Price.ToString("N0") ₽</td>
+                <td class="text-end">@(p.StockAmount > 0 ? p.StockAmount + " шт." : "нет")</td>
+                <td class="text-end"><a asp-action="Details" asp-route-id="@p.Id">Характеристики</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

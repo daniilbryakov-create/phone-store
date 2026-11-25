@@ -1,0 +1,14 @@
+@using Web_App.Models.ViewModels
+@model OrderCreateViewModel
+@{
+    ViewData["Title"] = "Оформление заказа";
+}
+
+<h1 class="h3 mb-3">Оформление заказа</h1>
+<p class="text-muted">Укажите количество нужных телефонов. Наличие проверяется при подтверждении заказа продавцом.</p>
+
+<form asp-action="NewOrder" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <partial name="_ItemsPicker" model="Model.Lines" />
+    <button type="submit" class="btn btn-primary">Оформить заказ</button>
+</form>

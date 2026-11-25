@@ -1,0 +1,33 @@
+@using Web_App.Models.ViewModels
+@model SaleCreateViewModel
+@{
+    ViewData["Title"] = "Оформление продажи";
+}
+
+<h1 class="h3 mb-3">Оформление продажи</h1>
+
+<form asp-action="Sell" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <h5>Товары</h5>
+    <partial name="_ItemsPicker" model="Model.Lines" />
+
+    <h5 class="mt-4">Покупатель</h5>
+    <p class="text-muted">Если клиент с таким телефоном уже есть в базе, ФИО и почту указывать не нужно, иначе он будет зарегистрирован.</p>
+    <div class="row g-3 mb-3">
+        <div class="col-md-4">
+            <label asp-for="ClientPhone" class="form-label"></label>
+            <input asp-for="ClientPhone" class="form-control" placeholder="+7 900 123-45-67" />
+        </div>
+        <div class="col-md-5">
+            <label asp-for="ClientName" class="form-label"></label>
+            <input asp-for="ClientName" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="ClientEmail" class="form-label"></label>
+            <input asp-for="ClientEmail" class="form-control" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Оформить продажу</button>
+</form>

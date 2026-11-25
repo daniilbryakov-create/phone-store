@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Кабинет администратора";
+}
+<h1 class="h3 mb-3">Здравствуйте, @User.Identity?.Name!</h1>
+<div class="row g-3">
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h5 class="card-title">Каталог телефонов</h5>
+        <p class="card-text">Добавление, изменение и удаление.</p>
+        <a asp-controller="Phones" asp-action="Index" class="btn btn-primary">Открыть</a>
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h5 class="card-title">Пользователи</h5>
+        <p class="card-text">Список, изменение, удаление.</p>
+        <a asp-action="Users" class="btn btn-primary">Открыть</a>
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h5 class="card-title">Создать пользователя</h5>
+        <p class="card-text">Покупатель, продавец, менеджер, администратор.</p>
+        <a asp-action="CreateUser" class="btn btn-outline-primary">Создать</a>
+    </div></div></div>
+</div>

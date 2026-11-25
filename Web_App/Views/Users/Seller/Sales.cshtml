@@ -1,0 +1,43 @@
+@using Web_App.Models
+@model List<Sale>
+@{
+    ViewData["Title"] = "История продаж";
+}
+
+<h1 class="h3 mb-3">История продаж</h1>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">Продаж пока нет.</p>
+}
+
+@foreach (var s in Model)
+{
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+            <span><strong>Продажа № @s.Id</strong> от @s.Date.ToString("dd.MM.yyyy HH:mm") · @s.Client.FullName · @s.Seller.FullName</span>
+            <span>
+                @s.FinalPrice.ToString("N0") ₽
+                <a asp-action="Receipt" asp-route-id="@s.Id" class="ms-2">чек</a>
+            </span>
+        </div>
+        <table class="table table-sm mb-0">
+            <tbody>
+            @foreach (var i in s.Items)
+            {
+                <tr>
+                    <td>@i.Phone</td>
+                    <td class="text-end">@i.Amount шт. × @i.PricePerItem.ToString("N0") ₽</td>
+                    <td class="text-end">возвращено: @i.ReturnedAmount</td>
+                    <td class="text-end">
+                        @if (i.ReturnableAmount > 0)
+                        {
+                            <a asp-action="ReturnItem" asp-route-saleItemId="@i.Id">Вернуть</a>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

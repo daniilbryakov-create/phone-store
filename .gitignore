@@ -1,0 +1,21 @@
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET build files
+**/bin/
+**/obj/
+
+# IDE
+.idea/
+
+# Operating system
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log

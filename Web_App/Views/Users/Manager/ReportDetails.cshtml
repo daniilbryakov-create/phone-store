@@ -1,0 +1,62 @@
+@using Web_App.Models
+@model Report
+@{
+    ViewData["Title"] = "Отчёт № " + Model.Id;
+}
+
+<h1 class="h3">Отчёт № @Model.Id: @Model.Type.ToDisplayString()</h1>
+<p class="text-muted">
+    Период: @Model.DateFrom.ToString("dd.MM.yyyy") — @Model.DateTo.ToString("dd.MM.yyyy")
+    · сформирован @Model.CreatedAt.ToString("dd.MM.yyyy HH:mm") · @Model.Manager.FullName
+</p>
+
+@if (Model.Type is ReportType.Sales or ReportType.SalesAndStock)
+{
+    <h5 class="mt-4">Продажи</h5>
+    <dl class="row">
+        <dt class="col-sm-4">Продаж</dt><dd class="col-sm-8">@Model.SalesCount</dd>
+        <dt class="col-sm-4">Выручка</dt><dd class="col-sm-8">@Model.SalesRevenue.ToString("N0") ₽</dd>
+        <dt class="col-sm-4">Возвратов</dt><dd class="col-sm-8">@Model.ReturnsCount</dd>
+        <dt class="col-sm-4">Сумма возвратов</dt><dd class="col-sm-8">@Model.RefundsTotal.ToString("N0") ₽</dd>
+        <dt class="col-sm-4">Чистая выручка</dt><dd class="col-sm-8"><strong>@Model.NetRevenue.ToString("N0") ₽</strong></dd>
+    </dl>
+
+    @if (Model.SoldLines.Any())
+    {
+        <table class="table table-sm">
+            <thead><tr><th>Телефон</th><th class="text-end">Продано, шт.</th><th class="text-end">Выручка</th></tr></thead>
+            <tbody>
+            @foreach (var l in Model.SoldLines)
+            {
+                <tr><td>@l.Phone</td><td class="text-end">@l.Quantity</td><td class="text-end">@l.Revenue.ToString("N0") ₽</td></tr>
+            }
+            </tbody>
+        </table>
+    }
+}
+
+@if (Model.Type == ReportType.Supplies)
+{
+    <h5 class="mt-4">Поставки</h5>
+    <dl class="row">
+        <dt class="col-sm-4">Поставок (без отменённых)</dt><dd class="col-sm-8">@Model.SuppliesCount</dd>
+        <dt class="col-sm-4">Закупочная стоимость</dt><dd class="col-sm-8">@Model.PurchaseCost.ToString("N0") ₽</dd>
+    </dl>
+}
+
+@if (Model.Type is ReportType.Stock or ReportType.SalesAndStock)
+{
+    <h5 class="mt-4">Остатки на момент формирования</h5>
+    <table class="table table-sm">
+        <thead><tr><th>Телефон</th><th class="text-end">На складе, шт.</th></tr></thead>
+        <tbody>
+        @foreach (var l in Model.StockLines)
+        {
+            <tr><td>@l.Phone</td><td class="text-end">@l.Amount</td></tr>
+        }
+        </tbody>
+    </table>
+}
+
+<a asp-action="Reports" class="btn btn-secondary">К списку отчётов</a>
+<button type="button" class="btn btn-outline-secondary d-print-none" onclick="window.print()">Печать</button>

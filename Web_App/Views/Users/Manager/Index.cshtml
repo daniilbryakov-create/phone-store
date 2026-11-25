@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "Кабинет менеджера";
+}
+<h1 class="h3 mb-3">Здравствуйте, @User.Identity?.Name!</h1>
+<div class="row g-3">
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h5 class="card-title">Остатки на складе</h5>
+        <a asp-action="Stock" class="btn btn-outline-primary">Смотреть</a>
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h5 class="card-title">Оформить поставку</h5>
+        <p class="card-text">Заказ телефонов у поставщика.</p>
+        <a asp-action="NewSupply" class="btn btn-primary">Оформить</a>
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h5 class="card-title">Управление поставками</h5>
+        <p class="card-text">Принять на склад или отменить.</p>
+        <a asp-action="Supplies" class="btn btn-outline-primary">Открыть</a>
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h5 class="card-title">Отчёты</h5>
+        <p class="card-text">Продажи, поставки, остатки за период.</p>
+        <a asp-action="Reports" class="btn btn-outline-primary">Открыть</a>
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h5 class="card-title">Поставщики</h5>
+        <a asp-controller="Suppliers" asp-action="Index" class="btn btn-outline-primary">Открыть</a>
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h5 class="card-title">Новая модель в каталог</h5>
+        <p class="card-text">Если телефона ещё нет в каталоге.</p>
+        <a asp-controller="Phones" asp-action="Create" class="btn btn-outline-primary">Добавить</a>
+    </div></div></div>
+</div>

@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "Кабинет покупателя";
+}
+<h1 class="h3 mb-3">Здравствуйте, @User.Identity?.Name!</h1>
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Каталог</h5>
+            <p class="card-text">Поиск телефонов и характеристики.</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">Открыть</a>
+        </div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Оформить заказ</h5>
+            <p class="card-text">Выберите телефоны и количество.</p>
+            <a asp-action="NewOrder" class="btn btn-primary">Заказать</a>
+        </div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Мои заказы</h5>
+            <p class="card-text">Статусы заказов, отмена.</p>
+            <a asp-action="MyOrders" class="btn btn-outline-primary">Смотреть</a>
+        </div></div>
+    </div>
+</div>

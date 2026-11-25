@@ -1,0 +1,36 @@
+@using Web_App.Models
+@using Web_App.Models.ViewModels
+@model ReportCreateViewModel
+@{
+    ViewData["Title"] = "Новый отчёт";
+}
+
+<h1 class="h3 mb-3">Формирование отчёта</h1>
+
+<form asp-action="NewReport" method="post" style="max-width:480px">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Type" class="form-label"></label>
+        <select asp-for="Type" class="form-select">
+            @foreach (var t in Enum.GetValues<ReportType>())
+            {
+                <option value="@t">@t.ToDisplayString()</option>
+            }
+        </select>
+    </div>
+    <div class="row g-3 mb-3">
+        <div class="col">
+            <label asp-for="DateFrom" class="form-label"></label>
+            <input asp-for="DateFrom" class="form-control" />
+        </div>
+        <div class="col">
+            <label asp-for="DateTo" class="form-label"></label>
+            <input asp-for="DateTo" class="form-control" />
+        </div>
+    </div>
+    <p class="text-muted">Границы периода включаются.</p>
+
+    <button type="submit" class="btn btn-primary">Сформировать</button>
+    <a asp-action="Reports" class="btn btn-secondary">Отмена</a>
+</form>

@@ -1,0 +1,39 @@
+@* Вставить в _Layout.cshtml внутрь <ul class="navbar-nav ..."> вместо старых пунктов меню *@
+<li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Каталог</a></li>
+@if (User.Identity?.IsAuthenticated == true)
+{
+    if (User.IsInRole("Client"))
+    {
+        <li class="nav-item"><a class="nav-link" asp-controller="Client" asp-action="NewOrder">Оформить заказ</a></li>
+        <li class="nav-item"><a class="nav-link" asp-controller="Client" asp-action="MyOrders">Мои заказы</a></li>
+    }
+    if (User.IsInRole("Seller"))
+    {
+        <li class="nav-item"><a class="nav-link" asp-controller="Seller" asp-action="Sell">Продажа</a></li>
+        <li class="nav-item"><a class="nav-link" asp-controller="Seller" asp-action="Orders">Заказы</a></li>
+        <li class="nav-item"><a class="nav-link" asp-controller="Seller" asp-action="Sales">История продаж</a></li>
+        <li class="nav-item"><a class="nav-link" asp-controller="Seller" asp-action="RegisterClient">Новый клиент</a></li>
+    }
+    if (User.IsInRole("Manager"))
+    {
+        <li class="nav-item"><a class="nav-link" asp-controller="Manager" asp-action="Stock">Остатки</a></li>
+        <li class="nav-item"><a class="nav-link" asp-controller="Manager" asp-action="NewSupply">Новая поставка</a></li>
+        <li class="nav-item"><a class="nav-link" asp-controller="Manager" asp-action="Supplies">Поставки</a></li>
+        <li class="nav-item"><a class="nav-link" asp-controller="Manager" asp-action="Reports">Отчёты</a></li>
+        <li class="nav-item"><a class="nav-link" asp-controller="Suppliers" asp-action="Index">Поставщики</a></li>
+    }
+    if (User.IsInRole("Admin"))
+    {
+        <li class="nav-item"><a class="nav-link" asp-controller="Phones" asp-action="Index">Телефоны</a></li>
+        <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Users">Пользователи</a></li>
+    }
+    <li class="nav-item">
+        <form asp-controller="Authentication" asp-action="Logout" method="post" class="d-inline">
+            <button type="submit" class="nav-link btn btn-link">Выйти (@User.Identity.Name)</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item"><a class="nav-link" asp-controller="Authentication" asp-action="Login">Войти</a></li>
+}

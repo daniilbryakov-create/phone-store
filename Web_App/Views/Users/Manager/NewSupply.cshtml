@@ -1,0 +1,42 @@
+@using Web_App.Models.ViewModels
+@model SupplyCreateViewModel
+@{
+    ViewData["Title"] = "Оформление поставки";
+}
+
+<h1 class="h3 mb-3">Оформление поставки</h1>
+
+@if (!Model.Suppliers.Any())
+{
+    <div class="alert alert-warning">
+        Нет ни одного поставщика. Сначала
+        <a asp-controller="Suppliers" asp-action="Create">зарегистрируйте поставщика</a>.
+    </div>
+}
+else
+{
+    <form asp-action="NewSupply" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3" style="max-width:420px">
+            <label asp-for="SupplierId" class="form-label"></label>
+            <select asp-for="SupplierId" class="form-select">
+                <option value="0">— выберите поставщика —</option>
+                @foreach (var s in Model.Suppliers)
+                {
+                    <option value="@s.Id">@s.OrganizationName</option>
+                }
+            </select>
+        </div>
+
+        <p class="text-muted">Укажите количество и закупочную цену для нужных телефонов, остальные строки оставьте с нулями. Если модели нет в списке, <a asp-controller="Phones" asp-action="Create">добавьте её в каталог</a>.</p>
+        <partial name="_SupplyPicker" model="Model.Lines" />
+
+        <div class="form-check mb-3">
+            <input asp-for="ReceiveNow" class="form-check-input" />
+            <label asp-for="ReceiveNow" class="form-check-label"></label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Оформить поставку</button>
+    </form>
+}

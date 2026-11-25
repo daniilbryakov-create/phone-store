@@ -1,0 +1,22 @@
+@using Web_App.Models
+@model Phone
+@{
+    ViewData["Title"] = Model.ToString();
+}
+
+<h1 class="h3">@Model.CompanyName @Model.PhoneName</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Характеристики</dt>
+    <dd class="col-sm-9">@Model.Specification</dd>
+    <dt class="col-sm-3">Цена</dt>
+    <dd class="col-sm-9">@Model.Price.ToString("N0") ₽</dd>
+    <dt class="col-sm-3">На складе</dt>
+    <dd class="col-sm-9">@(Model.StockAmount > 0 ? Model.StockAmount + " шт." : "нет в наличии")</dd>
+</dl>
+
+<a asp-action="Index" class="btn btn-secondary">Назад к каталогу</a>
+@if (User.IsInRole("Client"))
+{
+    <a asp-controller="Client" asp-action="NewOrder" class="btn btn-primary">Оформить заказ</a>
+}

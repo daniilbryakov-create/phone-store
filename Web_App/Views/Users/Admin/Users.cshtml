@@ -1,0 +1,31 @@
+@using Web_App.Models
+@model List<Web_App.Models.User>
+@{
+    ViewData["Title"] = "Пользователи";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Пользователи</h1>
+    <a asp-action="CreateUser" class="btn btn-primary">Создать пользователя</a>
+</div>
+
+<table class="table table-hover align-middle">
+    <thead>
+        <tr><th>№</th><th>ФИО</th><th>Роль</th><th>Логин</th><th></th></tr>
+    </thead>
+    <tbody>
+    @foreach (var u in Model)
+    {
+        <tr>
+            <td>@u.Id</td>
+            <td>@u.FullName</td>
+            <td>@u.Kind.ToDisplayString()</td>
+            <td>@(u.HasAccount ? u.Login : "—")</td>
+            <td class="text-end">
+                <a asp-action="EditUser" asp-route-id="@u.Id">Изменить</a> |
+                <a asp-action="DeleteUser" asp-route-id="@u.Id" class="text-danger">Удалить</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,63 @@
+@using Web_App.Models
+@using Web_App.Models.ViewModels
+@model UserCreateViewModel
+@{
+    ViewData["Title"] = "Новый пользователь";
+}
+
+<h1 class="h3 mb-3">Новый пользователь</h1>
+
+<form asp-action="CreateUser" method="post" style="max-width:520px">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Role" class="form-label"></label>
+        <select asp-for="Role" id="Role" class="form-select">
+            @foreach (var r in Enum.GetValues<UserRole>())
+            {
+                <option value="@r" selected="@(Model.Role == r)">@r.ToDisplayString()</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="FullName" class="form-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Login" class="form-label"></label>
+        <input asp-for="Login" class="form-control" autocomplete="off" />
+        <span asp-validation-for="Login" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" class="form-control" autocomplete="new-password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div id="clientFields">
+        <div class="mb-3">
+            <label asp-for="PhoneNumber" class="form-label"></label>
+            <input asp-for="PhoneNumber" class="form-control" placeholder="+7 900 123-45-67" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Создать</button>
+    <a asp-action="Users" class="btn btn-secondary">Отмена</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // поля телефона и почты нужны только для покупателя
+        const role = document.getElementById('Role');
+        const fields = document.getElementById('clientFields');
+        function toggle() { fields.style.display = role.value === 'Client' ? '' : 'none'; }
+        role.addEventListener('change', toggle);
+        toggle();
+    </script>
+}

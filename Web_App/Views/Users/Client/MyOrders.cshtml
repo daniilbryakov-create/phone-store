@@ -1,0 +1,9 @@
+@using Web_App.Models.ViewModels
+@model OrdersListViewModel
+@{
+    ViewData["Title"] = "Мои заказы";
+}
+
+<h1 class="h3 mb-3">Мои заказы</h1>
+<partial name="_OrdersList" model="Model" />
+<a asp-action="NewOrder" class="btn btn-primary">Новый заказ</a>

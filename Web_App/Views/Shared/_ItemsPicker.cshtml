@@ -1,0 +1,28 @@
+@using Web_App.Models.ViewModels
+@model List<ItemLine>
+
+@* Таблица выбора товаров; поля называются Lines[i].PhoneId / Lines[i].Amount *@
+<table class="table table-sm align-middle">
+    <thead>
+        <tr>
+            <th>Телефон</th>
+            <th class="text-end">Цена</th>
+            <th class="text-end">На складе</th>
+            <th style="width:140px">Количество</th>
+        </tr>
+    </thead>
+    <tbody>
+    @for (var i = 0; i < Model.Count; i++)
+    {
+        <tr>
+            <td>
+                @Model[i].Title
+                <input type="hidden" name="Lines[@i].PhoneId" value="@Model[i].PhoneId" />
+            </td>
+            <td class="text-end">@Model[i].Price.ToString("N0") ₽</td>
+            <td class="text-end">@Model[i].Stock</td>
+            <td><input type="number" min="0" name="Lines[@i].Amount" value="@Model[i].Amount" class="form-control form-control-sm" /></td>
+        </tr>
+    }
+    </tbody>
+</table>

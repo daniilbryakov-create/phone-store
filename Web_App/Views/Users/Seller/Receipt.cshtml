@@ -1,0 +1,37 @@
+@using Web_App.Models
+@model Sale
+@{
+    ViewData["Title"] = "Чек № " + Model.Id;
+}
+
+<div class="card mx-auto" style="max-width:640px">
+    <div class="card-body">
+        <h1 class="h4">Чек № @Model.Id</h1>
+        <p class="mb-1">Дата: @Model.Date.ToString("dd.MM.yyyy HH:mm")</p>
+        <p class="mb-1">Продавец: @Model.Seller.FullName</p>
+        <p>Покупатель: @Model.Client.FullName, @Model.Client.PhoneNumber</p>
+
+        <table class="table table-sm">
+            <thead><tr><th>Телефон</th><th class="text-end">Кол-во</th><th class="text-end">Цена</th><th class="text-end">Сумма</th></tr></thead>
+            <tbody>
+            @foreach (var i in Model.Items)
+            {
+                <tr>
+                    <td>@i.Phone</td>
+                    <td class="text-end">@i.Amount</td>
+                    <td class="text-end">@i.PricePerItem.ToString("N0")</td>
+                    <td class="text-end">@((i.Amount * i.PricePerItem).ToString("N0"))</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+        <p class="h5 text-end">ИТОГО: @Model.FinalPrice.ToString("N0") ₽</p>
+        <p class="text-muted mb-0">Гарантия: @Sale.WarrantyMonths мес., до @Model.WarrantyUntil.ToString("dd.MM.yyyy")</p>
+    </div>
+</div>
+
+<div class="text-center mt-3 d-print-none">
+    <button type="button" class="btn btn-outline-secondary" onclick="window.print()">Печать</button>
+    <a asp-action="Sell" class="btn btn-primary">Новая продажа</a>
+</div>

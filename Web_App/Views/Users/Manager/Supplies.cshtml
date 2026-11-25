@@ -1,0 +1,54 @@
+@using Web_App.Models
+@model List<Supply>
+@{
+    ViewData["Title"] = "Поставки";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Поставки</h1>
+    <a asp-action="NewSupply" class="btn btn-primary">Оформить поставку</a>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">Поставок пока нет.</p>
+}
+
+@foreach (var s in Model)
+{
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>
+                <strong>Поставка № @s.Id</strong> от @s.Date.ToString("dd.MM.yyyy HH:mm")
+                <span class="text-muted"> · @s.Supplier.OrganizationName · @s.Manager.FullName</span>
+            </span>
+            <span class="badge bg-secondary">@s.Status.ToDisplayString()</span>
+        </div>
+        <div class="card-body">
+            <ul class="mb-2">
+                @foreach (var i in s.Items)
+                {
+                    <li>@i.Phone — @i.Amount шт. × @i.PurchaseCost.ToString("N0") ₽</li>
+                }
+            </ul>
+            <strong>Закупочная стоимость: @s.TotalPurchaseCost.ToString("N0") ₽</strong>
+
+            <div class="mt-3 d-flex flex-wrap gap-2">
+                @if (s.Status == SupplyStatus.Ordered)
+                {
+                    <form asp-action="SupplyAction" method="post">
+                        <input type="hidden" name="id" value="@s.Id" />
+                        <button name="action" value="receive" class="btn btn-sm btn-success">Принять на склад</button>
+                    </form>
+                }
+                @if (s.Status != SupplyStatus.Cancelled)
+                {
+                    <form asp-action="SupplyAction" method="post" onsubmit="return confirm('Отменить поставку № @(s.Id)?');">
+                        <input type="hidden" name="id" value="@s.Id" />
+                        <button name="action" value="cancel" class="btn btn-sm btn-outline-danger">Отменить поставку</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+}

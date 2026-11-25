@@ -1,0 +1,32 @@
+@using Web_App.Models.ViewModels
+@model ReturnViewModel
+@{
+    ViewData["Title"] = "Оформление возврата";
+}
+
+<h1 class="h3 mb-3">Оформление возврата</h1>
+<p>
+    Продажа № @Model.SaleId, <strong>@Model.PhoneTitle</strong><br />
+    Цена за единицу: @Model.PricePerItem.ToString("N0") ₽. Можно вернуть: @Model.ReturnableAmount шт.
+</p>
+
+<form asp-action="ReturnItem" method="post" style="max-width:480px">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="SaleItemId" />
+    <div class="mb-3">
+        <label asp-for="Amount" class="form-label"></label>
+        <input asp-for="Amount" type="number" min="1" max="@Model.ReturnableAmount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Reason" class="form-label"></label>
+        <textarea asp-for="Reason" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Reason" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Оформить возврат</button>
+    <a asp-action="Sales" class="btn btn-secondary">Отмена</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
